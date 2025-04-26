@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>شحن العاب 🎮 [HAMO STORE]</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>🎮 شحن العاب [HAMO STORE]</h1>
+
+    <div class="cash-box" id="paymentBox">
+      <p><strong>بيانات الدفع:</strong></p>
+      <p class="cash-number" id="cashNumber">01015506479</p>
+      <button onclick="copyCashNumber()" class="copy-btn">📋 نسخ الرقم</button>
+      <p class="note">✅ التحويل: فودافون كاش</p>
+    </div>
+
+    <form id="orderForm">
+      <label for="game">اختر نوع الشحن:</label>
+      <select id="game" required onchange="updatePackages()">
+        <option value="pubg">شدات ببجي 🔥</option>
+        <option value="freefire">جواهر فري فاير 💎</option>
+      </select>
+
+      <label for="pubgId">🆔 ID الخاص بك:</label>
+      <input type="text" id="pubgId" required />
+
+      <label for="package">اختر الباقة:</label>
+      <select id="package" required></select>
+
+      <label for="payment">طريقة الدفع:</label>
+      <select id="payment" required onchange="updatePaymentInfo()">
+        <option value="فودافون كاش">فودافون كاش</option>
+        <option value="Payeer">Payeer</option>
+        <option value="Binance Pay">Binance Pay</option>
+      </select>
+
+      <label for="screenshot">ارفع سكرين التحويل:</label>
+      <input type="file" id="screenshot" required />
+
+      <button type="submit">🚀 إرسال الطلب</button>
+    </form>
+
+    <!-- زر تواصل مع خدمة العملاء -->
+    <a href="https://wa.me/201015506479" target="_blank" class="whatsapp-btn">💬 تواصل مع خدمة العملاء</a>
+
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
