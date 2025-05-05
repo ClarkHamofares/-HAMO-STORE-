@@ -13,12 +13,22 @@ const freefirePackages = [
   "2200 جوهرة - 1035 جنيه"
 ];
 
+const steamPackages = [
+  "EA SPORTS FC 25 (250 جنيه)",
+  "GTA 5 (250 جنيه)",
+  "GTA 4 (250 جنيه)",
+  "Cyberpunk 2077 (250 جنيه)",
+  "Red Dead Redemption 2 (250 جنيه)"
+];
+
 function updatePackages() {
   const game = document.getElementById("game").value;
   const packageSelect = document.getElementById("package");
   packageSelect.innerHTML = "";
 
-  const selectedPackages = game === "pubg" ? pubgPackages : freefirePackages;
+  const selectedPackages = game === "pubg" ? pubgPackages :
+                           game === "freefire" ? freefirePackages :
+                           steamPackages;
 
   selectedPackages.forEach(pack => {
     const option = document.createElement("option");
@@ -26,6 +36,13 @@ function updatePackages() {
     option.textContent = pack;
     packageSelect.appendChild(option);
   });
+
+  const idLabel = document.querySelector('label[for="pubgId"]');
+  if (game === "steam") {
+    idLabel.innerText = "📱 رقم واتساب للتسليم:";
+  } else {
+    idLabel.innerText = "🆔 ID الخاص بك:";
+  }
 }
 
 function updatePaymentInfo() {
@@ -46,6 +63,10 @@ function updatePaymentInfo() {
       cashNumber.innerText = "542662939";
       note.innerText = "✅ التحويل: Binance Pay";
       break;
+    case "فوري":
+      cashNumber.innerText = "01288390497";
+      note.innerText = "✅ التحويل: فوري";
+      break;
   }
 }
 
@@ -65,9 +86,11 @@ document.getElementById("orderForm").addEventListener("submit", async function (
   const payment = document.getElementById("payment").value;
   const screenshot = document.getElementById("screenshot").files[0];
 
-  const gameName = game === "pubg" ? "ببجي موبايل 🔥" : "فري فاير 💎";
+  const gameName = game === "pubg" ? "ببجي موبايل 🔥" :
+                   game === "freefire" ? "فري فاير 💎" :
+                   "ألعاب ستيم 🎮";
 
-  const message = `طلب شحن جديد 🎮\n\n🎮 اللعبة: ${gameName}\n🆔 ID: ${userId}\n💰 الباقة: ${selectedPackage}\n💳 الدفع: ${payment}`;
+  const message = `طلب شحن جديد 🎮\n\n🎮 اللعبة: ${gameName}\n${game === "steam" ? "📱 رقم واتساب:" : "🆔 ID:"} ${userId}\n💰 الباقة: ${selectedPackage}\n💳 الدفع: ${payment}`;
 
   await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
     method: "POST",
