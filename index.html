@@ -3,18 +3,18 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>شحن العاب 🎮 [HAMO STORE]</title>
+  <title>شحن مشاهدات تيك توك 🎯 [HAMO STORE]</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div class="container">
-    <h1>🎮 شحن العاب [HAMO STORE]</h1>
+    <h1>🎯 شحن مشاهدات تيك توك [HAMO STORE]</h1>
 
     <div class="cash-box" id="paymentBox">
       <p><strong>بيانات الدفع:</strong></p>
       <p class="cash-number" id="cashNumber">01015506479</p>
       <button onclick="copyCashNumber()" class="copy-btn">📋 نسخ الرقم</button>
-      <p class="note">✅ التحويل: فودافون كاش</p>
+      <p class="note">✅ التحويل: فودافون كاش فقط</p>
     </div>
 
     <form id="orderForm">
@@ -22,7 +22,7 @@
       <select id="game" required onchange="updatePackages()">
         <option value="pubg">شدات ببجي 🔥</option>
         <option value="freefire">جواهر فري فاير 💎</option>
-        <option value="steam">شراء ألعاب ستيم 🎮</option>
+        <option value="tiktok">مشاهدات تيك توك 🎯</option>
       </select>
 
       <label for="pubgId" id="idLabel">🆔 ID الخاص بك:</label>
@@ -30,14 +30,6 @@
 
       <label for="package">اختر الباقة:</label>
       <select id="package" required></select>
-
-      <label for="payment">طريقة الدفع:</label>
-      <select id="payment" required onchange="updatePaymentInfo()">
-        <option value="فودافون كاش">فودافون كاش</option>
-        <option value="Payeer">Payeer</option>
-        <option value="Binance Pay">Binance Pay</option>
-        <option value="فوري">فوري</option>
-      </select>
 
       <label for="screenshot">ارفع سكرين التحويل:</label>
       <input type="file" id="screenshot" required />
