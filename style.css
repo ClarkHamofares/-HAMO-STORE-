@@ -37,6 +37,7 @@ input, select {
   border-radius: 8px;
   border: 1px solid #ccc;
   font-size: 14px;
+  box-sizing: border-box;
 }
 
 button {
@@ -110,4 +111,18 @@ button:hover {
 
 .whatsapp-btn:hover {
   background-color: #1ebe5b;
+}
+
+#customInputContainer {
+  margin-top: 15px;
+  padding: 10px;
+  border: 1px dashed #aaa;
+  border-radius: 10px;
+  background-color: #f9f9f9;
+}
+
+#customPrice {
+  margin-top: 10px;
+  font-weight: bold;
+  color: #d84315;
 }
