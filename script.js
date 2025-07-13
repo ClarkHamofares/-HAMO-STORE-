@@ -84,10 +84,10 @@ function calculateCustomPrice() {
   let minAllowed = 0;
 
   if (game === "tiktok") {
-    pricePerUnit = 0.002; // 10000 مشاهدة = 20 جنيه
+    pricePerUnit = 0.002;
     minAllowed = 10000;
   } else if (game === "likes") {
-    pricePerUnit = 0.4; // 50 لايك = 20 جنيه
+    pricePerUnit = 0.4;
     minAllowed = 50;
   }
 
@@ -112,6 +112,7 @@ document.getElementById("orderForm").addEventListener("submit", async function (
 
   const game = document.getElementById("game").value;
   const userId = document.getElementById("pubgId").value;
+  const phone = document.getElementById("phone").value;
   const selectedPackage = document.getElementById("package").value;
   const customValue = document.getElementById("customValue")?.value;
   const customPrice = document.getElementById("customPrice")?.innerText;
@@ -123,7 +124,7 @@ document.getElementById("orderForm").addEventListener("submit", async function (
               : game === "likes" ? "لايكات تيك توك ❤️"
               : "طلب غير معروف";
 
-  let message = `طلب شحن جديد 📩\n\n🎮 النوع: ${gameName}\n${["tiktok", "likes"].includes(game) ? "🔗 رابط الفيديو:" : "🆔 ID:"} ${userId}\n`;
+  let message = `طلب شحن جديد 📩\n\n🎮 النوع: ${gameName}\n${["tiktok", "likes"].includes(game) ? "🔗 رابط الفيديو:" : "🆔 ID:"} ${userId}\n📞 رقم الهاتف: ${phone}\n`;
 
   if (selectedPackage.includes("أدخل")) {
     message += `📦 الكمية: ${customValue}\n${customPrice}\n`;
