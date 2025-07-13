@@ -18,7 +18,8 @@ const tiktokPackages = [
   "20000 مشاهده - 40 جنيه",
   "30000 مشاهده - 60 جنيه",
   "40000 مشاهده - 80 جنيه",
-  "50000 مشاهده - 100 جنيه"
+  "50000 مشاهده - 100 جنيه",
+  "أدخل قيمة أخرى"
 ];
 
 const tiktokLikes = [
@@ -27,26 +28,22 @@ const tiktokLikes = [
   "150 لايك - 60 جنيه",
   "200 لايك - 80 جنيه",
   "250 لايك - 100 جنيه",
-  "300 لايك - 120 جنيه"
+  "300 لايك - 120 جنيه",
+  "أدخل قيمة أخرى"
 ];
 
 function updatePackages() {
   const game = document.getElementById("game").value;
   const packageSelect = document.getElementById("package");
+  const customInputContainer = document.getElementById("customInputContainer");
   packageSelect.innerHTML = "";
+  customInputContainer.style.display = "none";
 
   let selectedPackages = [];
   if (game === "pubg") selectedPackages = pubgPackages;
   else if (game === "freefire") selectedPackages = freefirePackages;
   else if (game === "tiktok") selectedPackages = tiktokPackages;
   else if (game === "likes") selectedPackages = tiktokLikes;
-  else {
-    const option = document.createElement("option");
-    option.value = "custom";
-    option.textContent = "اكتب الكمية يدويًا وسيتم التواصل لحساب السعر";
-    packageSelect.appendChild(option);
-    return;
-  }
 
   selectedPackages.forEach(pack => {
     const option = document.createElement("option");
@@ -56,11 +53,51 @@ function updatePackages() {
   });
 
   const idLabel = document.querySelector('label[for="pubgId"]');
-  if (["tiktok", "likes", "custom"].includes(game)) {
+  if (["tiktok", "likes"].includes(game)) {
     idLabel.innerText = "🔗 رابط فيديو التيك توك:";
   } else {
     idLabel.innerText = "🆔 ID الخاص بك:";
   }
+}
+
+function handleCustomInput(selectElement) {
+  const customContainer = document.getElementById("customInputContainer");
+  if (selectElement.value.includes("أدخل")) {
+    customContainer.style.display = "block";
+    calculateCustomPrice();
+  } else {
+    customContainer.style.display = "none";
+    document.getElementById("customPrice").innerText = "";
+  }
+}
+
+function calculateCustomPrice() {
+  const game = document.getElementById("game").value;
+  const quantity = parseInt(document.getElementById("customValue").value);
+  const priceLabel = document.getElementById("customPrice");
+  if (!quantity || quantity <= 0) {
+    priceLabel.innerText = "";
+    return;
+  }
+
+  let pricePerUnit = 0;
+  let minAllowed = 0;
+
+  if (game === "tiktok") {
+    pricePerUnit = 0.002; // 10000 مشاهدة = 20 جنيه
+    minAllowed = 10000;
+  } else if (game === "likes") {
+    pricePerUnit = 0.4; // 50 لايك = 20 جنيه
+    minAllowed = 50;
+  }
+
+  if (quantity < minAllowed) {
+    priceLabel.innerText = `❌ الحد الأدنى هو ${minAllowed}`;
+    return;
+  }
+
+  const total = quantity * pricePerUnit;
+  priceLabel.innerText = `💰 السعر التقريبي: ${Math.round(total)} جنيه`;
 }
 
 function copyCashNumber() {
@@ -76,16 +113,25 @@ document.getElementById("orderForm").addEventListener("submit", async function (
   const game = document.getElementById("game").value;
   const userId = document.getElementById("pubgId").value;
   const selectedPackage = document.getElementById("package").value;
+  const customValue = document.getElementById("customValue")?.value;
+  const customPrice = document.getElementById("customPrice")?.innerText;
   const screenshot = document.getElementById("screenshot").files[0];
 
-  let gameName = "";
-  if (game === "pubg") gameName = "ببجي موبايل 🔥";
-  else if (game === "freefire") gameName = "فري فاير 💎";
-  else if (game === "tiktok") gameName = "مشاهدات تيك توك 🎯";
-  else if (game === "likes") gameName = "لايكات تيك توك ❤️";
-  else gameName = "طلب مخصص 🛠️";
+  let gameName = game === "pubg" ? "ببجي موبايل 🔥"
+              : game === "freefire" ? "فري فاير 💎"
+              : game === "tiktok" ? "مشاهدات تيك توك 🎯"
+              : game === "likes" ? "لايكات تيك توك ❤️"
+              : "طلب غير معروف";
 
-  const message = `طلب شحن جديد 📩\n\n🎮 النوع: ${gameName}\n${["tiktok", "likes", "custom"].includes(game) ? "🔗 رابط الفيديو:" : "🆔 ID:"} ${userId}\n💰 الباقة: ${selectedPackage}\n💳 الدفع: فودافون كاش`;
+  let message = `طلب شحن جديد 📩\n\n🎮 النوع: ${gameName}\n${["tiktok", "likes"].includes(game) ? "🔗 رابط الفيديو:" : "🆔 ID:"} ${userId}\n`;
+
+  if (selectedPackage.includes("أدخل")) {
+    message += `📦 الكمية: ${customValue}\n${customPrice}\n`;
+  } else {
+    message += `💰 الباقة: ${selectedPackage}\n`;
+  }
+
+  message += "💳 الدفع: فودافون كاش";
 
   await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
     method: "POST",
