@@ -24,14 +24,19 @@
         <option value="freefire">جواهر فري فاير 💎</option>
         <option value="tiktok">مشاهدات تيك توك 🎯</option>
         <option value="likes">لايكات تيك توك ❤️</option>
-        <option value="custom">🔢 أدخل قيمة أخرى</option>
       </select>
 
       <label for="pubgId" id="idLabel">🆔 ID الخاص بك:</label>
       <input type="text" id="pubgId" required />
 
       <label for="package">اختر الباقة:</label>
-      <select id="package" required></select>
+      <select id="package" onchange="handleCustomInput(this)"></select>
+
+      <div id="customInputContainer" style="display: none;">
+        <label for="customValue">أدخل الكمية المطلوبة:</label>
+        <input type="number" id="customValue" oninput="calculateCustomPrice()" />
+        <p id="customPrice"></p>
+      </div>
 
       <label for="screenshot">ارفع سكرين التحويل:</label>
       <input type="file" id="screenshot" required />
