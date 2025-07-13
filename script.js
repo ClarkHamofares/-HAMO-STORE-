@@ -13,12 +13,12 @@ const freefirePackages = [
   "2200 جوهرة - 1035 جنيه"
 ];
 
-const steamPackages = [
-  "EA SPORTS FC 25 (250 جنيه)",
-  "GTA 5 (250 جنيه)",
-  "GTA 4 (250 جنيه)",
-  "Cyberpunk 2077 (250 جنيه)",
-  "Red Dead Redemption 2 (250 جنيه)"
+const tiktokPackages = [
+  "10000 مشاهده - 20 جنيه",
+  "20000 مشاهده - 40 جنيه",
+  "30000 مشاهده - 60 جنيه",
+  "40000 مشاهده - 80 جنيه",
+  "50000 مشاهده - 100 جنيه"
 ];
 
 function updatePackages() {
@@ -28,7 +28,7 @@ function updatePackages() {
 
   const selectedPackages = game === "pubg" ? pubgPackages :
                            game === "freefire" ? freefirePackages :
-                           steamPackages;
+                           tiktokPackages;
 
   selectedPackages.forEach(pack => {
     const option = document.createElement("option");
@@ -38,35 +38,10 @@ function updatePackages() {
   });
 
   const idLabel = document.querySelector('label[for="pubgId"]');
-  if (game === "steam") {
-    idLabel.innerText = "📱 رقم واتساب للتسليم:";
+  if (game === "tiktok") {
+    idLabel.innerText = "🔗 رابط فيديو التيك توك:";
   } else {
     idLabel.innerText = "🆔 ID الخاص بك:";
-  }
-}
-
-function updatePaymentInfo() {
-  const paymentMethod = document.getElementById("payment").value;
-  const cashNumber = document.getElementById("cashNumber");
-  const note = document.querySelector(".note");
-
-  switch (paymentMethod) {
-    case "فودافون كاش":
-      cashNumber.innerText = "01015506479";
-      note.innerText = "✅ التحويل: فودافون كاش";
-      break;
-    case "Payeer":
-      cashNumber.innerText = "P1130934908";
-      note.innerText = "✅ التحويل: Payeer";
-      break;
-    case "Binance Pay":
-      cashNumber.innerText = "542662939";
-      note.innerText = "✅ التحويل: Binance Pay";
-      break;
-    case "فوري":
-      cashNumber.innerText = "01288390497";
-      note.innerText = "✅ التحويل: فوري";
-      break;
   }
 }
 
@@ -83,14 +58,13 @@ document.getElementById("orderForm").addEventListener("submit", async function (
   const game = document.getElementById("game").value;
   const userId = document.getElementById("pubgId").value;
   const selectedPackage = document.getElementById("package").value;
-  const payment = document.getElementById("payment").value;
   const screenshot = document.getElementById("screenshot").files[0];
 
   const gameName = game === "pubg" ? "ببجي موبايل 🔥" :
                    game === "freefire" ? "فري فاير 💎" :
-                   "ألعاب ستيم 🎮";
+                   "مشاهدات تيك توك 🎯";
 
-  const message = `طلب شحن جديد 🎮\n\n🎮 اللعبة: ${gameName}\n${game === "steam" ? "📱 رقم واتساب:" : "🆔 ID:"} ${userId}\n💰 الباقة: ${selectedPackage}\n💳 الدفع: ${payment}`;
+  const message = `طلب شحن جديد 📩\n\n🎮 النوع: ${gameName}\n${game === "tiktok" ? "🔗 رابط الفيديو:" : "🆔 ID:"} ${userId}\n💰 الباقة: ${selectedPackage}\n💳 الدفع: فودافون كاش`;
 
   await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
     method: "POST",
@@ -112,7 +86,6 @@ document.getElementById("orderForm").addEventListener("submit", async function (
   alert("✅ تم إرسال الطلب بنجاح!");
   this.reset();
   updatePackages();
-  updatePaymentInfo();
 });
 
 window.onload = updatePackages;
