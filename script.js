@@ -13,7 +13,9 @@ const pubgPackages = [
   "8100 يوسي - 4550 جنيه",
   "حزمة الشراء الأول - 55 جنيه",
   "حزمة الثانية مواد ترقية الأسلحة النارية - 155 جنيه",
-  "حزمة الثالثة الشعار الخرافي - 240 جنيه"
+  "حزمة الثالثة الشعار الخرافي - 240 جنيه",
+  "Prime - 70 جنيه",
+  "Prime Plus - 490 جنيه"
 ];
 
 const freefirePackages = [
@@ -127,7 +129,7 @@ document.getElementById("orderForm").addEventListener("submit", async function (
   const customPrice = document.getElementById("customPrice")?.innerText;
   const screenshot = document.getElementById("screenshot").files[0];
 
-  let gameName = game === "pubg" ? "ببجي موبايل 🔥"
+  let gameName = game === "pubg" ? "شحن شدات ببجي والحزمة وPrime Plus و Prime 🔥"
               : game === "freefire" ? "فري فاير 💎"
               : game === "tiktok" ? "مشاهدات تيك توك 🎯"
               : game === "likes" ? "لايكات تيك توك ❤️"
