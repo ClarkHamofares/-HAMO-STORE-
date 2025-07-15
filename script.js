@@ -25,21 +25,21 @@ const freefirePackages = [
 ];
 
 const tiktokPackages = [
-  "10000 مشاهده - 20 جنيه",
-  "20000 مشاهده - 40 جنيه",
-  "30000 مشاهده - 60 جنيه",
-  "40000 مشاهده - 80 جنيه",
-  "50000 مشاهده - 100 جنيه",
+  "10000 مشاهده - 4 جنيه",
+  "20000 مشاهده - 8 جنيه",
+  "30000 مشاهده - 12 جنيه",
+  "40000 مشاهده - 16 جنيه",
+  "50000 مشاهده - 20 جنيه",
   "أدخل قيمة أخرى"
 ];
 
 const tiktokLikes = [
-  "50 لايك - 10 جنيه",
-  "100 لايك - 20 جنيه",
-  "150 لايك - 30 جنيه",
-  "200 لايك - 40 جنيه",
-  "250 لايك - 50 جنيه",
-  "300 لايك - 60 جنيه",
+  "50 لايك - 7 جنيه",
+  "100 لايك - 14 جنيه",
+  "150 لايك - 21 جنيه",
+  "200 لايك - 28 جنيه",
+  "250 لايك - 35 جنيه",
+  "300 لايك - 42 جنيه",
   "أدخل قيمة أخرى"
 ];
 
@@ -47,21 +47,28 @@ function updatePackages() {
   const game = document.getElementById("game").value;
   const packageSelect = document.getElementById("package");
   const customInputContainer = document.getElementById("customInputContainer");
+  const pubgSubType = document.getElementById("pubgSubTypeContainer");
+
   packageSelect.innerHTML = "";
   customInputContainer.style.display = "none";
+  pubgSubType.style.display = "none";
 
-  let selectedPackages = [];
-  if (game === "pubg") selectedPackages = pubgPackages;
-  else if (game === "freefire") selectedPackages = freefirePackages;
-  else if (game === "tiktok") selectedPackages = tiktokPackages;
-  else if (game === "likes") selectedPackages = tiktokLikes;
+  if (game === "pubg") {
+    pubgSubType.style.display = "block";
+    updatePubgPackages();
+  } else {
+    const selectedPackages =
+      game === "freefire" ? freefirePackages :
+      game === "tiktok" ? tiktokPackages :
+      game === "likes" ? tiktokLikes : [];
 
-  selectedPackages.forEach(pack => {
-    const option = document.createElement("option");
-    option.value = pack;
-    option.textContent = pack;
-    packageSelect.appendChild(option);
-  });
+    selectedPackages.forEach(pack => {
+      const option = document.createElement("option");
+      option.value = pack;
+      option.textContent = pack;
+      packageSelect.appendChild(option);
+    });
+  }
 
   const idLabel = document.querySelector('label[for="pubgId"]');
   if (["tiktok", "likes"].includes(game)) {
@@ -69,6 +76,25 @@ function updatePackages() {
   } else {
     idLabel.innerText = "🆔 ID الخاص بك:";
   }
+}
+
+function updatePubgPackages() {
+  const type = document.getElementById("pubgType").value;
+  const packageSelect = document.getElementById("package");
+  packageSelect.innerHTML = "";
+
+  let list = [];
+
+  if (type === "uc") list = pubgPackages.slice(0, 9);
+  else if (type === "bundle") list = pubgPackages.slice(9, 12);
+  else if (type === "prime") list = pubgPackages.slice(12, 14);
+
+  list.forEach(pack => {
+    const option = document.createElement("option");
+    option.value = pack;
+    option.textContent = pack;
+    packageSelect.appendChild(option);
+  });
 }
 
 function handleCustomInput(selectElement) {
@@ -95,10 +121,10 @@ function calculateCustomPrice() {
   let minAllowed = 0;
 
   if (game === "tiktok") {
-    pricePerUnit = 0.002;
+    pricePerUnit = 0.0004;
     minAllowed = 10000;
   } else if (game === "likes") {
-    pricePerUnit = 0.2;
+    pricePerUnit = 0.14;
     minAllowed = 50;
   }
 
@@ -127,6 +153,8 @@ document.getElementById("orderForm").addEventListener("submit", async function (
   const selectedPackage = document.getElementById("package").value;
   const customValue = document.getElementById("customValue")?.value;
   const customPrice = document.getElementById("customPrice")?.innerText;
+  const customName = document.getElementById("customName")?.value;
+  const customGender = document.getElementById("customGender")?.value;
   const screenshot = document.getElementById("screenshot").files[0];
 
   let gameName = game === "pubg" ? "شحن شدات ببجي والحزمة وPrime Plus و Prime 🔥"
@@ -138,7 +166,7 @@ document.getElementById("orderForm").addEventListener("submit", async function (
   let message = `طلب شحن جديد 📩\n\n🎮 النوع: ${gameName}\n${["tiktok", "likes"].includes(game) ? "🔗 رابط الفيديو:" : "🆔 ID:"} ${userId}\n📞 رقم الهاتف: ${phone}\n`;
 
   if (selectedPackage.includes("أدخل")) {
-    message += `📦 الكمية: ${customValue}\n${customPrice}\n`;
+    message += `📦 الكمية: ${customValue}\n${customPrice}\n👤 الاسم: ${customName}\n⚧️ الجنس: ${customGender}\n`;
   } else {
     message += `💰 الباقة: ${selectedPackage}\n`;
   }
