@@ -26,6 +26,15 @@
         <option value="likes">لايكات تيك توك ❤️</option>
       </select>
 
+      <div id="pubgSubTypeContainer" style="display: none; margin-top: 12px;">
+        <label for="pubgType">اختر نوع شحن ببجي:</label>
+        <select id="pubgType" onchange="updatePubgPackages()">
+          <option value="uc">شحن UC</option>
+          <option value="bundle">حزم الشراء</option>
+          <option value="prime">Prime / Prime Plus</option>
+        </select>
+      </div>
+
       <label for="pubgId" id="idLabel">🆔 ID الخاص بك:</label>
       <input type="text" id="pubgId" required />
 
@@ -35,6 +44,11 @@
       <div id="customInputContainer" style="display: none;">
         <label for="customValue">أدخل الكمية المطلوبة:</label>
         <input type="number" id="customValue" oninput="calculateCustomPrice()" />
+        <input type="text" id="customName" placeholder="الاسم الكامل" style="margin-top: 10px;" />
+        <select id="customGender" style="margin-top: 10px;">
+          <option value="ذكر">ذكر</option>
+          <option value="أنثى">أنثى</option>
+        </select>
         <p id="customPrice"></p>
       </div>
 
