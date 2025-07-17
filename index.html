@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>[HAMO STORE]</title>
+  <link rel="icon" type="image/png" href="https://i.top4top.io/p_348532dqh1.png" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
@@ -52,7 +53,19 @@
         <p id="customPrice"></p>
       </div>
 
-      <label for="phone">📞 اكتب رقم هاتفك للتواصل عند حدوث أي خطأ:</label>
+      <!-- ✅ معلومات المستخدم الشخصية -->
+      <p style="margin-top: 20px; font-weight: bold;">🧾 معلوماتك الشخصية: (في حالة حدوث أي خطأ)</p>
+
+      <label for="fullName">👤 اسمك الكامل:</label>
+      <input type="text" id="fullName" required placeholder="مثال: محمد أحمد" />
+
+      <label for="gender">⚧️ الجنس:</label>
+      <select id="gender" required>
+        <option value="ذكر">ذكر</option>
+        <option value="أنثى">أنثى</option>
+      </select>
+
+      <label for="phone">📞 رقم الهاتف للتواصل:</label>
       <input type="tel" id="phone" required placeholder="مثال: 010xxxxxxxx" />
 
       <label for="screenshot">ارفع سكرين التحويل:</label>
