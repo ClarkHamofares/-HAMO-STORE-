@@ -8,6 +8,7 @@ const pubgPackages = [
   "660 يوسي - 465 جنيه",
   "720 يوسي - 510 جنيه",
   "985 يوسي - 690 جنيه",
+  "1500 يوسي - 1055 جنيه",
   "1800 يوسي - 1150 جنيه",
   "3850 يوسي - 2300 جنيه",
   "8100 يوسي - 4550 جنيه",
@@ -25,21 +26,13 @@ const freefirePackages = [
 ];
 
 const tiktokPackages = [
-  "10000 مشاهده - 4 جنيه",
-  "20000 مشاهده - 8 جنيه",
-  "30000 مشاهده - 12 جنيه",
-  "40000 مشاهده - 16 جنيه",
-  "50000 مشاهده - 20 جنيه",
-  "أدخل قيمة أخرى"
+  "10000 مشاهده - 4 جنيه", "20000 مشاهده - 8 جنيه", "30000 مشاهده - 12 جنيه",
+  "40000 مشاهده - 16 جنيه", "50000 مشاهده - 20 جنيه", "أدخل قيمة أخرى"
 ];
 
 const tiktokLikes = [
-  "50 لايك - 7 جنيه",
-  "100 لايك - 14 جنيه",
-  "150 لايك - 21 جنيه",
-  "200 لايك - 28 جنيه",
-  "250 لايك - 35 جنيه",
-  "300 لايك - 42 جنيه",
+  "50 لايك - 7 جنيه", "100 لايك - 14 جنيه", "150 لايك - 21 جنيه",
+  "200 لايك - 28 جنيه", "250 لايك - 35 جنيه", "300 لايك - 42 جنيه",
   "أدخل قيمة أخرى"
 ];
 
@@ -71,11 +64,9 @@ function updatePackages() {
   }
 
   const idLabel = document.querySelector('label[for="pubgId"]');
-  if (["tiktok", "likes"].includes(game)) {
-    idLabel.innerText = "🔗 رابط فيديو التيك توك:";
-  } else {
-    idLabel.innerText = "🆔 ID الخاص بك:";
-  }
+  idLabel.innerText = ["tiktok", "likes"].includes(game)
+    ? "🔗 رابط فيديو التيك توك:"
+    : "🆔 ID الخاص بك:";
 }
 
 function updatePubgPackages() {
@@ -85,9 +76,9 @@ function updatePubgPackages() {
 
   let list = [];
 
-  if (type === "uc") list = pubgPackages.slice(0, 9);
-  else if (type === "bundle") list = pubgPackages.slice(9, 12);
-  else if (type === "prime") list = pubgPackages.slice(12, 14);
+  if (type === "uc") list = pubgPackages.slice(0, 10);
+  else if (type === "bundle") list = pubgPackages.slice(10, 13);
+  else if (type === "prime") list = pubgPackages.slice(13, 15);
 
   list.forEach(pack => {
     const option = document.createElement("option");
@@ -112,6 +103,7 @@ function calculateCustomPrice() {
   const game = document.getElementById("game").value;
   const quantity = parseInt(document.getElementById("customValue").value);
   const priceLabel = document.getElementById("customPrice");
+
   if (!quantity || quantity <= 0) {
     priceLabel.innerText = "";
     return;
@@ -150,6 +142,8 @@ document.getElementById("orderForm").addEventListener("submit", async function (
   const game = document.getElementById("game").value;
   const userId = document.getElementById("pubgId").value;
   const phone = document.getElementById("phone").value;
+  const fullName = document.getElementById("fullName").value;
+  const gender = document.getElementById("gender").value;
   const selectedPackage = document.getElementById("package").value;
   const customValue = document.getElementById("customValue")?.value;
   const customPrice = document.getElementById("customPrice")?.innerText;
@@ -158,20 +152,20 @@ document.getElementById("orderForm").addEventListener("submit", async function (
   const screenshot = document.getElementById("screenshot").files[0];
 
   let gameName = game === "pubg" ? "شحن شدات ببجي والحزمة وPrime Plus و Prime 🔥"
-              : game === "freefire" ? "فري فاير 💎"
-              : game === "tiktok" ? "مشاهدات تيك توك 🎯"
-              : game === "likes" ? "لايكات تيك توك ❤️"
-              : "طلب غير معروف";
+    : game === "freefire" ? "فري فاير 💎"
+    : game === "tiktok" ? "مشاهدات تيك توك 🎯"
+    : game === "likes" ? "لايكات تيك توك ❤️"
+    : "طلب غير معروف";
 
-  let message = `طلب شحن جديد 📩\n\n🎮 النوع: ${gameName}\n${["tiktok", "likes"].includes(game) ? "🔗 رابط الفيديو:" : "🆔 ID:"} ${userId}\n📞 رقم الهاتف: ${phone}\n`;
+  let message = `📩 طلب شحن جديد\n\n🎮 النوع: ${gameName}\n${["tiktok", "likes"].includes(game) ? "🔗 رابط الفيديو:" : "🆔 ID:"} ${userId}\n`;
 
   if (selectedPackage.includes("أدخل")) {
-    message += `📦 الكمية: ${customValue}\n${customPrice}\n👤 الاسم: ${customName}\n⚧️ الجنس: ${customGender}\n`;
+    message += `📦 الكمية: ${customValue}\n${customPrice}\n👤 الاسم (خانة الكمية): ${customName}\n⚧️ الجنس: ${customGender}\n`;
   } else {
     message += `💰 الباقة: ${selectedPackage}\n`;
   }
 
-  message += "💳 الدفع: فودافون كاش";
+  message += `\n🧾 معلومات المستخدم:\n👤 الاسم: ${fullName}\n⚧️ الجنس: ${gender}\n📞 الهاتف: ${phone}\n💳 الدفع: فودافون كاش`;
 
   await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
     method: "POST",
