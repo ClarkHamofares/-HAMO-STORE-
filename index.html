@@ -1,82 +1,151 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>[HAMO STORE]</title>
-  <link rel="icon" type="image/png" href="https://i.top4top.io/p_348532dqh1.png" />
-  <link rel="stylesheet" href="style.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HAMO STORE | شحن ببجي السريع</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=Changa:wght@400;700&display=swap');
+        :root { --neon: #00f2ff; --sale: #ff0055; }
+        body { background-color: #050505; color: white; font-family: 'Changa', sans-serif; overflow-x: hidden; }
+        .bg-glow { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at 50% 50%, #1a0b2e 0%, #050505 100%); z-index: -1; }
+        .neon-card { border: 1px solid rgba(0, 242, 255, 0.1); transition: 0.3s; position: relative; overflow: hidden; background: rgba(255,255,255,0.03); border-radius: 20px; }
+        .neon-card:hover { border-color: var(--neon); transform: translateY(-5px); box-shadow: 0 0 20px rgba(0, 242, 255, 0.2); }
+        .selected { border-color: var(--neon) !important; background: rgba(0, 242, 255, 0.1) !important; box-shadow: 0 0 30px rgba(0, 242, 255, 0.3) !important; }
+        .sale-badge { position: absolute; top: 10px; right: -30px; background: var(--sale); color: white; padding: 5px 35px; transform: rotate(45deg); font-size: 10px; font-weight: bold; }
+        .old-price { text-decoration: line-through; color: #ff0055; font-size: 0.8rem; opacity: 0.6; }
+        
+        /* زر الواتساب العائم */
+        .whatsapp-float {
+            position: fixed; bottom: 30px; left: 30px;
+            background-color: #25d366; color: #FFF;
+            border-radius: 50px; text-align: center; font-size: 30px;
+            box-shadow: 2px 2px 15px rgba(0,0,0,0.5); z-index: 100;
+            width: 60px; height: 60px; display: flex; align-items: center; justify-content: center;
+            text-decoration: none; animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7); }
+            70% { transform: scale(1.1); box-shadow: 0 0 0 15px rgba(37, 211, 102, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
+        }
+    </style>
 </head>
-<body>
-  <div class="container">
-    <h1>[HAMO STORE]</h1>
+<body class="pb-20">
+    <div class="bg-glow"></div>
 
-    <div class="cash-box" id="paymentBox">
-      <p><strong>بيانات الدفع:</strong></p>
-      <p class="cash-number" id="cashNumber">01015506479</p>
-      <button onclick="copyCashNumber()" class="copy-btn">📋 نسخ الرقم</button>
-      <p class="note">✅ التحويل: فودافون كاش فقط</p>
-    </div>
+    <a href="https://wa.me/201015506479" class="whatsapp-float" target="_blank">
+        <i class="fab fa-whatsapp"></i>
+    </a>
 
-    <form id="orderForm">
-      <label for="game">اختر نوع الشحن:</label>
-      <select id="game" required onchange="updatePackages()">
-        <option value="pubg">شحن شدات ببجي والحزمة وPrime Plus و Prime 🔥</option>
-        <option value="freefire">جواهر فري فاير 💎</option>
-        <option value="tiktok">مشاهدات تيك توك 🎯</option>
-        <option value="likes">لايكات تيك توك ❤️</option>
-      </select>
+    <header class="py-12 text-center">
+        <h1 class="text-6xl font-black italic tracking-tighter" style="font-family: 'Orbitron'; color: var(--neon); text-shadow: 0 0 20px rgba(0, 242, 255, 0.5);">HAMO <span class="text-white">STORE</span></h1>
+        <p class="text-gray-400 mt-2 tracking-[3px] uppercase text-xs">خدمة عملاء 24 ساعة عبر الواتساب</p>
+    </header>
 
-      <div id="pubgSubTypeContainer" style="display: none; margin-top: 12px;">
-        <label for="pubgType">اختر نوع شحن ببجي:</label>
-        <select id="pubgType" onchange="updatePubgPackages()">
-          <option value="uc">شحن UC</option>
-          <option value="bundle">حزم الشراء</option>
-          <option value="prime">Prime / Prime Plus</option>
-        </select>
-      </div>
+    <main class="container mx-auto px-4 max-w-6xl">
+        <div class="grid lg:grid-cols-3 gap-10">
+            
+            <div class="lg:col-span-2 space-y-8">
+                <section>
+                    <h2 class="text-xl font-bold mb-4 flex items-center gap-3"><i class="fas fa-id-badge text-cyan-400"></i> 1. معرف اللاعب (ID)</h2>
+                    <input type="number" id="player-id" placeholder="أدخل ID حسابك هنا" 
+                           class="w-full p-5 rounded-2xl bg-black/60 border border-white/10 text-2xl text-center focus:border-cyan-400 outline-none transition-all">
+                </section>
 
-      <label for="pubgId" id="idLabel">🆔 ID الخاص بك:</label>
-      <input type="text" id="pubgId" required />
+                <section>
+                    <h2 class="text-xl font-bold mb-4 flex items-center gap-3"><i class="fas fa-gem text-cyan-400"></i> 2. باقات الشدات (خصم 10%)</h2>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4" id="uc-grid"></div>
+                </section>
 
-      <label for="package">اختر الباقة:</label>
-      <select id="package" onchange="handleCustomInput(this)"></select>
+                <section>
+                    <h2 class="text-xl font-bold mb-4 flex items-center gap-3 text-yellow-400"><i class="fas fa-bolt"></i> 3. عروض الازدهار الحصرية</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4" id="offers-grid"></div>
+                </section>
+            </div>
 
-      <div id="customInputContainer" style="display: none;">
-        <label for="customValue">أدخل الكمية المطلوبة:</label>
-        <input type="number" id="customValue" oninput="calculateCustomPrice()" />
-        <input type="text" id="customName" placeholder="الاسم الكامل" style="margin-top: 10px;" />
-        <select id="customGender" style="margin-top: 10px;">
-          <option value="ذكر">ذكر</option>
-          <option value="أنثى">أنثى</option>
-        </select>
-        <p id="customPrice"></p>
-      </div>
+            <div class="lg:col-span-1">
+                <div class="bg-white/5 backdrop-blur-md p-8 rounded-[35px] border border-white/10 sticky top-10 shadow-2xl">
+                    <h3 class="text-xl font-black mb-6 border-b border-white/10 pb-4 text-center">تفاصيل الدفع</h3>
+                    
+                    <div class="bg-red-600/10 border border-red-600/30 p-4 rounded-2xl mb-6 text-center">
+                        <span class="text-[10px] text-gray-400 block mb-1 uppercase">رقم التحويل (فودافون كاش)</span>
+                        <span class="text-2xl font-black tracking-widest text-white">01015506479</span>
+                    </div>
 
-      <!-- ✅ معلومات المستخدم الشخصية -->
-      <p style="margin-top: 20px; font-weight: bold;">🧾 معلوماتك الشخصية: (في حالة حدوث أي خطأ)</p>
+                    <div class="mb-6">
+                        <label class="block text-xs text-gray-400 mb-2 mr-2 italic">ارفع سكرين التحويل هنا:</label>
+                        <input type="file" id="proof" class="w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:bg-white/10 file:text-white hover:file:bg-white/20">
+                    </div>
 
-      <label for="fullName">👤 اسمك الكامل:</label>
-      <input type="text" id="fullName" required placeholder="مثال: محمد أحمد" />
+                    <div class="text-center mb-6">
+                        <span class="text-xs text-gray-400 uppercase tracking-tighter">الإجمالي المطلوب</span>
+                        <div id="total-price" class="text-6xl font-black text-cyan-400 leading-none">0</div>
+                        <span class="text-sm font-bold">جنيه مصري</span>
+                    </div>
 
-      <label for="gender">⚧️ الجنس:</label>
-      <select id="gender" required>
-        <option value="ذكر">ذكر</option>
-        <option value="أنثى">أنثى</option>
-      </select>
+                    <button onclick="confirmOrder()" class="w-full py-5 bg-cyan-500 hover:bg-cyan-400 text-black font-black text-xl rounded-2xl shadow-xl transition-all">
+                        تأكيد وشحن الآن <i class="fab fa-whatsapp mr-2"></i>
+                    </button>
+                    
+                    <p class="text-[10px] text-center mt-4 text-gray-500 italic">عند الضغط، سيتم توجيهك للمدير لتنفيذ الطلب</p>
+                </div>
+            </div>
+        </div>
+    </main>
 
-      <label for="phone">📞 رقم الهاتف للتواصل:</label>
-      <input type="tel" id="phone" required placeholder="مثال: 010xxxxxxxx" />
+    <script>
+        const getOldPrice = (p) => Math.round(p / 0.9);
+        const ucData = [{n: 60, p: 50}, {n: 120, p: 100}, {n: 325, p: 225}, {n: 660, p: 435}, {n: 1800, p: 1080}, {n: 3850, p: 2180}, {n: 8100, p: 4260}];
+        const offData = [
+            {n: "الازدهار (3)", d: "300 شدة + 79 كرستالة", p: 245},
+            {n: "الازدهار (2)", d: "180 شدة + 9 ماتريال", p: 155},
+            {n: "الازدهار (1)", d: "170 شدة + 900 عملة G", p: 55}
+        ];
 
-      <label for="screenshot">ارفع سكرين التحويل:</label>
-      <input type="file" id="screenshot" required />
+        let selected = { name: '', price: 0 };
 
-      <button type="submit">🚀 إرسال الطلب</button>
-    </form>
+        function init() {
+            document.getElementById('uc-grid').innerHTML = ucData.map(i => `
+                <div class="neon-card p-5 text-center cursor-pointer" onclick="sel(this, '${i.n} UC', ${i.p})">
+                    <div class="sale-badge">SALE</div>
+                    <div class="text-xl font-black">${i.n} UC</div>
+                    <div class="old-price">${getOldPrice(i.p)} ج</div>
+                    <div class="text-lg font-bold">${i.p} ج</div>
+                </div>
+            `).join('');
 
-    <a href="https://wa.me/201015506479" target="_blank" class="whatsapp-btn">💬 تواصل مع خدمة العملاء</a>
-  </div>
+            document.getElementById('offers-grid').innerHTML = offData.map(o => `
+                <div class="neon-card p-5 text-center cursor-pointer border-yellow-500/10" onclick="sel(this, '${o.n}', ${o.p})">
+                    <div class="text-yellow-500 font-bold text-sm mb-1">${o.n}</div>
+                    <div class="text-[10px] opacity-50 mb-2">${o.d}</div>
+                    <div class="old-price text-xs">${getOldPrice(o.p)} ج</div>
+                    <div class="text-xl font-black text-white">${o.p} ج</div>
+                </div>
+            `).join('');
+        }
 
-  <script src="script.js"></script>
+        function sel(el, name, price) {
+            document.querySelectorAll('.neon-card').forEach(c => c.classList.remove('selected'));
+            el.classList.add('selected');
+            selected = { name, price };
+            document.getElementById('total-price').innerText = price;
+        }
+
+        function confirmOrder() {
+            const id = document.getElementById('player-id').value;
+            const file = document.getElementById('proof').files[0];
+            if(!id || selected.price === 0 || !file) {
+                alert("يا أسطورة، كمل البيانات (ID + باقة + صورة التحويل)!");
+                return;
+            }
+            const msg = `🚀 طلب شحن جديد - HAMO STORE\n━━━━━━━━━━━━\n👤 آيدي اللاعب: ${id}\n💎 الباقة المختارة: ${selected.name}\n💰 المبلغ المدفوع: ${selected.price} ج.م\n━━━━━━━━━━━━\n📸 تم إرفاق السكرين.. شحن سريع يا بطل!`;
+            window.open(`https://wa.me/201015506479?text=${encodeURIComponent(msg)}`);
+        }
+
+        init();
+    </script>
 </body>
 </html>
